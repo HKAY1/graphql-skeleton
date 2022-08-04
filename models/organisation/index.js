@@ -1,0 +1,106 @@
+'use strict'
+
+const mongoose = require('mongoose');
+const lookup = require('../lookup');
+const { Schema } = mongoose;
+const { ObjectId } = Schema;
+const bcrypt = require('bcrypt');
+
+const fields = {
+    userName: {
+        type: String,
+        required: true
+    },
+    organisationName: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        required: true
+    },
+    adminName: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        unique: true,
+        validate: {
+            validator: function (v) {
+                return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(v);
+            },
+            message: props => `${props.value} is not a valid email!`
+        },
+        required: true
+    },
+    phoneNumber: {
+        unique: true,
+        type: String,
+        validate: {
+            validator: function (v) {
+                return /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/.test(v);
+            },
+            message: props => `${props.value} is not a valid phone number!`
+        },
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        default: ""
+    },
+    role: {
+        type: String,
+        enum: lookup.organisationRoles,
+        default: lookup.organisationRoles[1],
+        required: true
+    },
+    status: {
+        type: String,
+        enum: lookup.accountStatus,
+        default: lookup.accountStatus[0]
+    }
+}
+
+const schema = require('utils/generate-schema')(fields);
+
+/* Schema methods */
+schema.methods.encryptPassword = function (password) {
+    return bcrypt.hashSync(password, 10);
+}
+
+schema.methods.comparePassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+}
+
+schema.pre('save', function (next) {
+    let user = this;
+    // only hash the password if it has been modified (or is new)
+    if (!user.isModified('password'))
+        return next();
+
+    // generate a salt
+    bcrypt.genSalt(10, function (err, salt) {
+        if (err) return next(err);
+
+        // hash the password using our new salt
+        bcrypt.hash(user.password, salt, function (err, hash) {
+            if (err) return next(err);
+            // override the cleartext password with the hashed one
+            user.password = hash;
+            next();
+        });
+    });
+});
+
+schema.index({ email: 1 }, { unique: true });
+schema.index({ phoneNumber: 1 }, { unique: true });
+schema.index({ userName: 1 }, { unique: true });
+
+
+
+module.exports = mongoose.model('organisation', schema);

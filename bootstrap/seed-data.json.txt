@@ -1,0 +1,47 @@
+{
+    "users": [
+        {
+            "name": "Admin",
+            "hashedPassword": "$2b$10$JrUB9WJCdEzQKgHNtTP6pup2Berl0l19Vl535daylIt4kq2L59yBy",
+            "email": "admin@gmail.com",
+            "phoneNumber": 1234567890,
+            "gender": "Male",
+            "role": "Admin",
+            "isAccountVerified": true,
+            "status": "Active"
+        },
+        {
+            "name": "Ravi Vohra",
+            "hashedPassword": "$2b$10$JrUB9WJCdEzQKgHNtTP6pup2Berl0l19Vl535daylIt4kq2L59yBy",
+            "email": "ravi@gmail.com",
+            "phoneNumber": 1234567899,
+            "gender": "Male",
+            "role": "Teacher",
+            "isAccountVerified": true,
+            "status": "Active"
+        },
+        {
+            "name": "Jayant Barthwal",
+            "hashedPassword": "$2b$10$JrUB9WJCdEzQKgHNtTP6pup2Berl0l19Vl535daylIt4kq2L59yBy",
+            "email": "jb@gmail.com",
+            "phoneNumber": 1122334455,
+            "gender": "Male",
+            "role": "Teacher",
+            "isAccountVerified": true,
+            "status": "Active"
+        },        
+        {
+            "name": "Ankit Kumar",
+            "hashedPassword": "$2b$10$JrUB9WJCdEzQKgHNtTP6pup2Berl0l19Vl535daylIt4kq2L59yBy",
+            "email": "student-01@gmail.com",
+            "phoneNumber": 1111111111,
+            "class": "10",
+            "stream": "Science",
+            "subjects": ["Maths", "English", "Science", "SST"],
+            "gender": "Male",
+            "role": "Student",
+            "isAccountVerified": true,
+            "status": "Active"
+        }
+    ]
+}
